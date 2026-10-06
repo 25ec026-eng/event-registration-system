@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+
+{% block title %}EventHub | Discover events{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center min-vh-75 py-5">
+      <div class="col-lg-6">
+        <span class="badge bg-primary-subtle text-primary mb-3">Event management made simple</span>
+        <h1 class="display-4 fw-bold">Discover. Register. Experience.</h1>
+        <p class="lead text-secondary">Find exciting events, register instantly, and manage your event experience from one place.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="{{ url_for('events') }}" class="btn btn-primary btn-lg">Explore Events</a>
+          <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">Register Now</a>
+        </div>
+        <div class="stats-row mt-5">
+          <div class="stat-box"><strong>25K+</strong><span>Registrations</span></div>
+          <div class="stat-box"><strong>450+</strong><span>Events</span></div>
+          <div class="stat-box"><strong>96%</strong><span>Satisfaction</span></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="hero-card shadow-lg">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80" alt="Event" class="img-fluid rounded-4" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="section-heading mb-4">
+      <span>Featured</span>
+      <h2>Featured Events</h2>
+    </div>
+    <div class="row g-4">
+      {% for event in featured %}
+      <div class="col-md-6 col-lg-4">
+        <div class="event-card h-100">
+          <img src="{{ event.image }}" alt="{{ event.title }}" class="event-card-image" />
+          <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="event-tag">{{ event.category_name or 'Event' }}</span>
+              <span class="badge bg-success">{{ event.status }}</span>
+            </div>
+            <h5>{{ event.title }}</h5>
+            <ul class="event-meta list-unstyled small text-secondary">
+              <li><i class="fa-regular fa-calendar me-2"></i>{{ event.date }}</li>
+              <li><i class="fa-solid fa-location-dot me-2"></i>{{ event.venue }}</li>
+              <li><i class="fa-solid fa-user me-2"></i>{{ event.organizer }}</li>
+            </ul>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <strong class="text-primary">₹{{ event.ticket_price }}</strong>
+              <div class="d-flex gap-2">
+                <a href="{{ url_for('event_details', event_id=event.id) }}" class="btn btn-outline-primary btn-sm">Details</a>
+                <a href="{{ url_for('register_event', event_id=event.id) }}" class="btn btn-primary btn-sm">Register</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="section-heading mb-4">
+      <span>Upcoming</span>
+      <h2>Upcoming Events</h2>
+    </div>
+    <div class="row g-4">
+      {% for event in upcoming %}
+      <div class="col-md-6 col-lg-3">
+        <div class="event-card h-100">
+          <img src="{{ event.image }}" alt="{{ event.title }}" class="event-card-image" />
+          <div class="p-3">
+            <h5>{{ event.title }}</h5>
+            <p class="text-secondary small mb-2">{{ event.date }} • {{ event.start_time }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="text-primary fw-bold">₹{{ event.ticket_price }}</span>
+              <a href="{{ url_for('event_details', event_id=event.id) }}" class="btn btn-outline-primary btn-sm">View</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="section-heading mb-4">
+      <span>Browse by interest</span>
+      <h2>Event Categories</h2>
+    </div>
+    <div class="row g-3">
+      {% for category in categories %}
+      <div class="col-md-4 col-lg-3">
+        <div class="category-box">
+          <div class="icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+          <h6>{{ category.name }}</h6>
+          <small>{{ category.description }}</small>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="section-heading mb-4">
+      <span>How it works</span>
+      <h2>How It Works</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card text-center h-100">
+          <div class="feature-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <h5>1. Discover</h5>
+          <p>Explore upcoming events by category, date, and venue.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card text-center h-100">
+          <div class="feature-icon"><i class="fa-solid fa-ticket"></i></div>
+          <h5>2. Register</h5>
+          <p>Select ticket type, quantity, and attendee details.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card text-center h-100">
+          <div class="feature-icon"><i class="fa-solid fa-check"></i></div>
+          <h5>3. Attend</h5>
+          <p>Get payment confirmation and digital ticket access instantly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="section-heading mb-4">
+      <span>Testimonials</span>
+      <h2>What People Say</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="testimonial-card h-100">
+          <p>"The registration flow was smooth and professional. I received my ticket instantly and the dashboard was easy to use."</p>
+          <div class="author">Aditi Sharma</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card h-100">
+          <p>"Our college event enrollment process became much more organized with ticket management and reminders."</p>
+          <div class="author">Rohit Kumar</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card h-100">
+          <p>"The admin dashboard made it easy to track registrations, capacity, and revenue for every workshop."</p>
+          <div class="author">Sneha Nair</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="section-heading mb-4">
+      <span>FAQs</span>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Can I register without logging in?</button></h2>
+        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">You can browse events without an account but registration requires login.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">Is payment real or simulated?</button></h2>
+        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">This project simulates payment for educational and demo purposes.</div></div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Do I get a digital ticket?</button></h2>
+        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes, every successful registration generates a digital ticket and QR code.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-primary-subtle">
+  <div class="container text-center">
+    <h2 class="mb-3">Ready to host your next big event?</h2>
+    <p class="text-secondary">Manage registrations, tickets, analytics, and user engagement with one platform.</p>
+    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
+  </div>
+</section>
+{% endblock %}
